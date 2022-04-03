@@ -1,0 +1,15 @@
+defaults:
+  - model/base.yaml
+  - model: stylegan-v
+
+  # Import dataset common and overwrite it with the custom one
+  - dataset/base.yaml
+  - dataset: ffs
+
+  - sampling/base.yaml
+  - sampling: random
+
+  - env/base.yaml
+  - env: local
+  - infra.yaml
+  - training/base.yaml

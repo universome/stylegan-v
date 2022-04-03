@@ -1,0 +1,6 @@
+# @package _group_
+
+name: ${sampling.type}${sampling.num_frames_per_video}
+fps: ${dataset.fps}
+max_num_frames: ${dataset.max_num_frames}
+num_frames_per_video: 3

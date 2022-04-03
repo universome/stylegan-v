@@ -1,0 +1,36 @@
+# @package _group_
+outdir: ${project_release_dir}
+data: ${dataset.path}
+gpus: ${num_gpus}
+cfg: auto # Base config [default: auto]. One of ['auto', 'stylegan2', 'paper256', 'paper512', 'paper1024', 'cifar']
+snap: 200
+kimg: 25000
+metrics: ["fvd2048_16f", "fvd2048_128f", "fvd2048_128f_subsample8f", "fid50k_full"]
+
+aug: ada # One of ['noaug', 'ada', 'fixed']
+mirror: true # Enable dataset x-flips [default: false]
+batch_size: 64
+resume: ~
+
+# General settings
+seed: 0 # Random seed
+dry_run: false # Print training options and exit
+
+# Dataset.
+cond: false # Train conditional model based on dataset labels
+subset: ~ # Train with only N images [default: all]
+
+# Discriminator augmentation.
+p: ~ # Augmentation probability for --aug=fixed
+target: 0.6 # ADA target value for --aug=ada
+augpipe: bgc # Augmentation pipeline [default: bgc]
+
+# Transfer learning.
+freezed: 0 # Freeze-D [default: 0 layers]
+
+# Performance options.
+fp32: false # Disable mixed-precision training
+nhwc: false # Use NHWC memory format with FP16
+nobench: false # Disable cuDNN benchmarking
+allow_tf32: false # Allow PyTorch to use TF32 internally
+num_workers: 3 # Override number of DataLoader workers

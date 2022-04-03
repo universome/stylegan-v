@@ -1,0 +1,33 @@
+# @package _group_
+
+name: mocogan
+generator:
+  num_frames_per_video: ${sampling.num_frames_per_video}
+  max_num_frames: ${dataset.max_num_frames}
+  sampling: ${sampling}
+  use_noise: false
+  input: {type: const}
+  w_dim: 512
+  z_dim: 512
+  motion:
+    z_dim: 512
+    v_dim: 512
+    motion_z_distance: 1
+    gen_strategy: autoregressive
+    use_fractional_t: false
+    fourier: false
+  time_enc:
+    cond_type: concat_w
+
+discriminator:
+  source: mocogan
+  sampling: ${sampling}
+  num_frames_per_video: ${sampling.num_frames_per_video}
+  video_discr_lr_multiplier: 0.1
+  video_discr_num_t_paddings: 0 # Number of paddings for the time dimension in the video discriminator
+
+loss_kwargs:
+  # Disabling for now
+  video_consistent_aug: true
+  style_mixing_prob: 0.0
+  pl_weight: 0.0

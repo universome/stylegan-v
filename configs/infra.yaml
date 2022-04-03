@@ -1,0 +1,43 @@
+# @package _group_
+
+num_gpus: 4
+print_only: false
+
+# Experiment directory naming conventions
+git_hash: {_target_: src.infra.utils.get_git_hash}
+exp_suffix: no_spec
+experiment_name: ${dataset.name}_${model.name}_${sampling.name}_${exp_suffix}
+experiment_name_with_hash: ${experiment_name}-${git_hash}
+experiments_dir: experiments
+project_release_dir: ${env.project_path}/${experiments_dir}/${experiment_name_with_hash}
+
+# SLURM config (in case it's instaled on your system)
+slurm: false
+job_sequence_length: 1
+slurm_log_dir: ${project_release_dir}
+use_qos: false
+sbatch_args:
+  constraint: ${env.slurm_constraint}
+  time: "1-0"
+  gres: gpu:${num_gpus}
+  cpus-per-task: 5
+  mem:
+    _target_: src.infra.utils.num_gpus_to_mem
+    num_gpus: ${num_gpus}
+    mem_per_gpu: 64
+  # mem-per-gpu: 64G
+  cpus-per-gpu: 5
+  comment: ${experiment_name}
+sbatch_args_str:
+  _target_: src.infra.utils.cfg_to_args_str
+  cfg: ${sbatch_args}
+
+# Arguments that we want to pass via env into slurm job launcher
+env_args:
+  project_dir: ${project_release_dir}
+  python_bin: ${env.python_bin}
+  python_script: ${project_release_dir}/src/infra/slurm_job.py
+env_args_str:
+  _target_: src.infra.utils.cfg_to_args_str
+  cfg: ${env_args}
+  use_dashes: true

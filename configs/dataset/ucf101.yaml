@@ -1,0 +1,6 @@
+# @package _group_
+
+name: ucf101_${dataset.resolution}
+resolution: 256
+fps: 25
+# c_dim: 101

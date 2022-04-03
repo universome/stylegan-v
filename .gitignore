@@ -1,0 +1,17 @@
+__pycache__/
+.cache/
+lib/
+/env/
+/env-ampere/
+outputs/
+.hydra/
+experiments/
+old-experiments/
+failed-experiments/
+data
+*.log
+notebooks/zoo.ipynb
+.ipynb_checkpoints/
+checkpoints/
+notebooks/
+evaluation/

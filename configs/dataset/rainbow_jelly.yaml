@@ -1,0 +1,5 @@
+# @package _group_
+
+name: rainbow_jelly_${dataset.resolution}
+resolution: 256
+fps: 30

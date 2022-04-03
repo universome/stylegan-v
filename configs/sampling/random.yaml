@@ -1,0 +1,6 @@
+# @package _group_
+
+type: "random"
+total_dists: [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
+max_dist: 32
+name: random${sampling.num_frames_per_video}_max${sampling.max_dist}

@@ -1,0 +1,8 @@
+# @package _group_
+
+# This sampling config can be used for training image generators
+# It is left here for debugging purposes
+type: "random"
+total_dists: ~
+num_frames_per_video: 1
+max_dist: 0

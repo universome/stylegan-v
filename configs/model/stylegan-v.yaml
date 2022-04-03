@@ -1,0 +1,58 @@
+# @package _group_
+
+name: stylegan-v
+generator:
+  sampling: ${sampling}
+  use_noise: false
+  input: {type: temporal}
+  w_dim: 512
+  z_dim: 512
+
+  # Motion mapping network hyperparameters
+  motion:
+    z_dim: 512
+    v_dim: 512
+
+    # Distance between motion codes
+    motion_z_distance: 16
+
+    # Parameters of the 2-layer conv1d-based motion generation network
+    gen_strategy: conv
+    kernel_size: 11
+
+    # Sample time positions in non-integer locations
+    use_fractional_t: true
+
+    # Use our aligned positional embeddings for time
+    fourier: true
+
+  # Hyperparameters for fourier positional encoder
+  time_enc:
+    cond_type: concat_const
+    dim: 256
+
+    # We use linearly spaced frequencies for positional embedding
+    # since they have larger overall period. This are start/end periods for them.
+    # A period of length `N` means that the given coordinate of the positional embedding
+    # vector will get repeated after `N` frames
+    # We set `min_period_len` to the same value as `motion_z_distance`
+    # since in some sense they reflect the same thing in a dataset: the speed of motions.
+    min_period_len: ${model.generator.motion.motion_z_distance}
+    max_period_len: 1024
+
+    # This randomly shifts different dimensions of time positional
+    # embeddings, making them more disentangled.
+    phase_dropout_std: 1.0
+
+discriminator:
+  sampling: ${sampling}
+  concat_res: 16 # The resolution at which we concatenate frames
+  num_frames_div_factor: 2 # Divide the channel dimensionality by `num_frames_div_factor`
+  dummy_c: false # Multiply the conditioning vector by 0.0 for ablation purposes
+
+loss_kwargs:
+  style_mixing_prob: 0.0
+  pl_weight: 0.0
+  # Apply the same augmentation to all the frames of a video
+  # In our early experiments, the quality dropped a lot when disabling it
+  video_consistent_aug: true

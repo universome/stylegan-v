@@ -1,0 +1,15 @@
+# @package _group_
+
+python_bin: ${env.project_path}/env/bin/python
+before_train_commands: []
+torch_extensions_dir: "/tmp/torch_extensions"
+objects_to_copy:
+  - ${env.project_path}/src
+  - ${env.project_path}/configs
+# A list of objects that are static and too big
+# to be copy-pasted for each experiment
+symlinks_to_create:
+  - ${env.project_path}/data
+tmp_dir: "/tmp"
+datasets_dir: ~
+slurm_constraint: v100

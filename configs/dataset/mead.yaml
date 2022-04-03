@@ -1,0 +1,5 @@
+# @package _group_
+
+name: mead_front_${dataset.resolution}
+fps: 30
+c_dim: 77

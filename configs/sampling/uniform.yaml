@@ -1,0 +1,6 @@
+# @package _group_
+
+type: "uniform"
+dists_between_frames: [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
+max_dist_between_frames: 32
+name: uniform_${sampling.num_frames_per_video}_max${sampling.max_dist_between_frames}

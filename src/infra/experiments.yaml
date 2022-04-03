@@ -1,0 +1,60 @@
+#----------------------------------------------------------------------------
+# Here, we keep the experiments HPs in case we want to do mass-launching via SLURM
+#----------------------------------------------------------------------------
+
+mocogan_sg2:
+  common_args:
+    model: mocogan
+    training.batch: 16
+    dataset.max_num_frames: 32
+  experiments:
+    b16_mnf16:
+      sampling: traditional_16
+      dataset.max_num_frames: 16
+      model.generator.motion.long_history: false
+
+#----------------------------------------------------------------------------
+
+ffs:
+  common_args:
+    sampling.num_frames_per_video: 3
+  experiments:
+    mnf1024_sfpm32_minperiod16: {}
+    mnf1024_sfpm32_minperiod32:
+      model.generator.time_enc.min_period_len: 32
+
+#----------------------------------------------------------------------------
+
+sky_timelapse:
+  common_args:
+    sampling.num_frames_per_video: 3
+  experiments:
+    mnf1024_sfpm32_minperiod16: {}
+    mnf1024_sfpm256_minperiod256:
+      model.generator.motion.motion_z_distance: 256
+      model.generator.time_enc.min_period_len: 256
+
+#----------------------------------------------------------------------------
+
+highres:
+  common_args:
+    training.metrics: \"fvd2048_16f,fvd2048_128f_subsample,fid50k_full\"
+    training.batch: 16
+    sampling.num_frames_per_video: 2
+  experiments:
+    mnf1024_sfpm32_minperiod16_batch16: {}
+    mnf32_sfpm32_minperiod16_batch16:
+      dataset.max_num_frames: 32
+
+#----------------------------------------------------------------------------
+
+cond_ablation_ffs:
+  common_args:
+    sampling.num_frames_per_video: 3
+  experiments:
+    hyper_mod:
+      model.discriminator.hyper_type: hyper
+    without_proj_cond:
+      model.discriminator.dummy_c: true
+
+#----------------------------------------------------------------------------

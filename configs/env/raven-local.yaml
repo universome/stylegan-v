@@ -1,0 +1,15 @@
+# @package _group_
+
+# We keep this config as an example of the environment setup on one of our machines
+# It is easy to configure different machine's environemts via such configs
+python_bin: ${env.project_path}/env-ampere/bin/python
+project_path: ${hydra:runtime.cwd}
+before_train_commands:
+  - module unload cuda
+  - module load cuda
+  - module load cmake
+  - module load gcc/8.2.0
+  - conda init bash
+  - source $HOME/.bashrc
+  - conda activate /home/skoroki/stylegan-v/env-ampere
+symlink_output: /ibex/ai/home/skoroki/stylegan-v/${experiments_dir}/${experiment_name_with_hash}/output

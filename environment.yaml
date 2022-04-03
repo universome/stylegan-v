@@ -1,0 +1,26 @@
+name: stylegan-v
+channels:
+  - pytorch
+  - defaults
+  - conda-forge
+dependencies:
+  - python >= 3.8
+  - pip
+  - cudatoolkit=10.1
+  - pytorch=1.7.1
+  - torchvision=0.8.2
+  - opencv=4.5.2
+  - pip:
+    - hydra-core==1.0.7
+    - click==7.1.2
+    - scipy
+    - ninja==1.10.0
+    - tensorboard==2.4.1
+    - tqdm
+    - gitpython
+    - gpustat
+    - av
+    - matplotlib
+    - torch_tb_profiler==0.3.1
+    - joblib==1.1.0
+    - -e .
