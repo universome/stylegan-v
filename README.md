@@ -1,6 +1,8 @@
 # StyleGAN-V: A Continuous Video Generator with the Price, Image Quality and Perks of StyleGAN2
 ### [CVPR 2022] Official pytorch implementation
-[[Project website]](https://universome.github.io/stylegan-v) [[Paper]](https://kaust-cair.s3.amazonaws.com/stylegan-v/stylegan-v-paper.pdf)
+[[Project website]](https://universome.github.io/stylegan-v)
+[[Paper]](https://kaust-cair.s3.amazonaws.com/stylegan-v/stylegan-v-paper.pdf)
+[[Casual GAN papers summary]](https://www.casualganpapers.com/text_guided_video_editing_hd_video_generation/StyleGAN-V-explained.html?query=stylegan-v)
 
 <div style="text-align:center">
 <img src="https://user-images.githubusercontent.com/3128824/161441271-09fa5cfe-a2ae-4a7f-b5ca-ad90f5e0287e.gif" alt="Content/Motion decomposition for Face Forensics 256x256"/>
