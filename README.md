@@ -31,6 +31,12 @@ This repo is built on top of [INR-GAN](https://github.com/universome/inr-gan), s
 
 If you have Ampere GPUs (A6000, A100 or RTX-3090), then use `environment-ampere.yaml` instead because it is based CUDA 11 and newer pytorch versions.
 
+## System requirements
+
+Our codebase uses the same system requirements as StyleGAN2-ADA: see them [here](https://github.com/NVlabs/stylegan2-ada-pytorch#requirements).
+We trained all the 256x256 models on 4 V100s with 32 GB each for ~2 days.
+It is very similar in training time to [StyleGAN2-ADA](https://github.com/NVlabs/stylegan2-ada-pytorch) (even a bit faster).
+
 ## Training
 ### Dataset structure
 The dataset should be either a `.zip` archive (the default setting) or a directory structured as:
@@ -62,12 +68,10 @@ python src/infra/launch.py hydra.run.dir=. exp_suffix=my_experiment_name env=loc
 
 To train on SkyTimelapse 256x256, run:
 ```
-python src/infra/launch.py hydra.run.dir=. exp_suffix=my_experiment_name env=local dataset=sky_timelapse dataset.resolution=256 num_gpus=4 model.generator.motion.motion_z_distance=256
+python src/infra/launch.py hydra.run.dir=. exp_suffix=my_experiment_name env=local dataset=sky_timelapse dataset.resolution=256 num_gpus=4 model.generator.time_enc.min_period_len=256
 ```
-Here, we increased the distance between `z` motion codes and the period length for frequencies since the motions in this dataset are much slower, than in FaceForensics.
-In practice, this parameter (and its accompanying `model.generator.time_enc.min_period_len`) influences the motion quality (but not the image quality!) the most.
-
-To train on SkyTimelapse, use `model.generator.motion.motion_z_distance=256 model.generator.time_enc.min_period_len=256` arguments to decrease the frequencies (this will make the motion more smooth).
+For SkyTimelapse 256x256, we increased the period length for the motion time encoder since the motions in this dataset are much slower/smoother, than in FaceForensics.
+In practice, this parameter (and its accompanying `model.generator.motion.motion_z_distance`) influences the motion quality (but not the image quality!) the most.
 
 If you do not want `hydra` to create some log directories (typically, you don't), add the following arguments: `hydra.output_subdir=null hydra/job_logging=disabled hydra/hydra_logging=disabled`.
 

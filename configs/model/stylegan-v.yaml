@@ -14,7 +14,7 @@ generator:
     v_dim: 512
 
     # Distance between motion codes
-    motion_z_distance: 16
+    motion_z_distance: ${model.generator.time_enc.min_period_len}
 
     # Parameters of the 2-layer conv1d-based motion generation network
     gen_strategy: conv
@@ -37,7 +37,7 @@ generator:
     # vector will get repeated after `N` frames
     # We set `min_period_len` to the same value as `motion_z_distance`
     # since in some sense they reflect the same thing in a dataset: the speed of motions.
-    min_period_len: ${model.generator.motion.motion_z_distance}
+    min_period_len: 16
     max_period_len: 1024
 
     # This randomly shifts different dimensions of time positional
