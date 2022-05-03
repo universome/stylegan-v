@@ -29,7 +29,7 @@ torch.set_grad_enabled(False)
 @click.option('--noise_mode', help='Noise mode', type=click.Choice(['const', 'random', 'none']), default='const', show_default=True)
 @click.option('--num_videos', type=int, help='Number of images to generate', default=50000, show_default=True)
 @click.option('--batch_size', type=int, help='Batch size to use for generation', default=32, show_default=True)
-@click.option('--same_motion', type=bool, help='Should we use the same motion codes for all videos in a row?', default=False, show_default=True)
+@click.option('--moco_decomposition', type=bool, help='Should we do content/motion decomposition (available only for `--as_grids 1` generation)?', default=False, show_default=True)
 @click.option('--seed', type=int, help='Random seed', default=42, metavar='DIR')
 @click.option('--outdir', help='Where to save the output images', type=str, required=True, metavar='DIR')
 @click.option('--save_as_mp4', help='Should we save as independent frames or mp4?', type=bool, default=False, metavar='BOOL')
@@ -48,7 +48,7 @@ def generate(
     noise_mode: str,
     num_videos: int,
     batch_size: int,
-    same_motion: bool,
+    moco_decomposition: bool,
     seed: int,
     outdir: str,
     save_as_mp4: bool,
@@ -75,6 +75,10 @@ def generate(
         # Selecting a checkpoint with the best score
     else:
         assert networks_dir is None, "Cant have both parameters: network_pkl and networks_dir"
+
+    if moco_decomposition:
+        assert as_grids, f"Content/motion decomposition is available only when we generate as grids."
+        assert batch_size == num_videos, "Same motion is supported only for batch_size == num_videos"
 
     print('Loading networks from "%s"...' % network_pkl)
     device = torch.device('cuda')
@@ -108,9 +112,7 @@ def generate(
 
     ts = time_offset + torch.arange(video_len, device=device).float().unsqueeze(0).repeat(batch_size, 1) / slowmo_coef # [batch_size, video_len]
 
-    if same_motion:
-        assert as_grids, "Same motion is supported only for grid visualizations"
-        assert batch_size == num_videos, "Same motion is supported only for batch_size == num_videos"
+    if moco_decomposition:
         num_rows = num_cols = int(np.sqrt(num_videos))
         motion_z = G.synthesis.motion_encoder(c=all_c[:num_rows], t=ts[:num_rows])['motion_z'] # [1, *motion_dims]
         motion_z = motion_z.repeat_interleave(num_cols, dim=0) # [batch_size, *motion_dims]

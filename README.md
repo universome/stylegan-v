@@ -104,6 +104,11 @@ Adjust the corresponding arguments to change the settings.
 Alternatively, instead of specifying `--network_pkl`, you can specify `--networks_dir`, which should lead to a directory containing the checkpoints and the `metric-fvd2048_16f.json` metrics json file (it is generated automatically during training).
 It will then select the best checkpoint based on the metrics, which so not to search for the best checkpoint of an experiment manually.
 
+To sample content/motion decomposition grids, use `--moco_decomposition 1` by running the following command:
+```
+python src/scripts/generate.py --networks_dir PATH_TO_EXPERIMENT/output --num_videos 25 --as_grids true --save_as_mp4 true --fps 25 --video_len 128 --batch_size 25 --outdir tmp --truncation_psi 0.8 --moco_decomposition 1
+```
+
 ### Training MoCoGAN + SG2 backbone
 To train the `MoCoGAN+SG2` model, just use the `mocogan.yaml` model config with the uniform sampling:
 ```
