@@ -99,7 +99,7 @@ def calc_metrics_for_dataset(ctx, metrics, real_data_path, fake_data_path, mirro
     if not args.num_gpus >= 1:
         ctx.fail('--gpus must be at least 1')
 
-    dummy_dataset_cfg = OmegaConf.create({'max_num_frames': 10000, 'sampling': {}})
+    dummy_dataset_cfg = OmegaConf.create({'max_num_frames': 10000})
 
     # Initialize dataset options for real data.
     args.dataset_kwargs = dnnlib.EasyDict(

@@ -268,8 +268,7 @@ class VideoFramesFolderDataset(Dataset):
         discard_short_videos: bool=False,               # Should we discard videos that are shorter than `load_n_consecutive`?
         **super_kwargs,                                 # Additional arguments for the Dataset base class.
     ):
-
-        self.sampling_dict = OmegaConf.to_container(OmegaConf.create({**cfg.sampling}))
+        self.sampling_dict = OmegaConf.to_container(OmegaConf.create({**cfg.sampling})) if 'sampling' in cfg else None
         self.max_num_frames = cfg.max_num_frames
         self._path = path
         self._zipfile = None
@@ -318,11 +317,6 @@ class VideoFramesFolderDataset(Dataset):
                 assert curr_obj_depth == root_path_depth + 1, f"Video directories should be inside the root dir. {o} is not."
                 if curr_d in self._video_dir2frames:
                     sorted_files = sorted(self._video_dir2frames[curr_d])
-                    if sorted_files != self._video_dir2frames[curr_d]:
-                        print('BAD ORDER!')
-                        for f in self._video_dir2frames[curr_d]:
-                            print('-', f)
-                        assert False
                     self._video_dir2frames[curr_d] = sorted_files
                 curr_d = o
 
@@ -334,7 +328,7 @@ class VideoFramesFolderDataset(Dataset):
         if len(self._video_idx2frames) == 0:
             raise IOError('No videos found in the specified archive')
 
-        raw_shape = [len(self._video_idx2frames)] + list(self._load_raw_frames(0)[0][0].shape)
+        raw_shape = [len(self._video_idx2frames)] + list(self._load_raw_frames(0, [0])[0][0].shape)
 
         super().__init__(name=name, raw_shape=raw_shape, **super_kwargs)
 
@@ -441,6 +435,7 @@ class VideoFramesFolderDataset(Dataset):
         images = []
 
         if frames_idx is None:
+            assert not self.sampling_dict is None, f"The dataset was created without `cfg.sampling` config and cannot sample frames on its own."
             if total_len > self.max_num_frames:
                 offset = random.randint(0, total_len - self.max_num_frames)
             frames_idx = sample_frames(self.sampling_dict, total_video_len=min(total_len, self.max_num_frames)) + offset
