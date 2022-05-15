@@ -482,7 +482,7 @@ def training_loop(
             ('vis', {k: (v.to('cpu') if isinstance(v, torch.Tensor) else v) for k, v in vis.items()}),
             ('stats', {'cur_nimg': cur_nimg, 'cur_tick': cur_tick, 'batch_idx': batch_idx}),
         ]
-        if (network_snapshot_ticks is not None) and (done or cur_tick % network_snapshot_ticks == 0):
+        if (rank == 0) and (network_snapshot_ticks is not None) and (done or cur_tick % network_snapshot_ticks == 0):
             snapshot_data = dict(training_set_kwargs=dict(training_set_kwargs))
             DDP_CONSISTENCY_IGNORE_REGEX = r'.*\.(w_avg|p|rnn\..*|embeds.*\.weight|num_batches_tracked|running_mean|running_var)'
             for name, module in snapshot_modules:
