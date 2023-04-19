@@ -18,7 +18,7 @@ Code release TODO:
 - [x] Data preprocessing scripts
 - [ ] CLIP editing scripts (50% done)
 - [ ] Jupyter notebook demos
-- [ ] Pre-trained checkpoints
+- [x] [Pre-trained checkpoints](https://disk.yandex.ru/d/v7MS7zu4mmZxXw)
 
 ## Installation
 To install and activate the environment, run the following command:
